@@ -1,4 +1,4 @@
-﻿namespace TMDB.Persistence
+﻿namespace TMDB.Models
 {
     public class Class1
     {
