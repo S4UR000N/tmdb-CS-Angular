@@ -6,4 +6,17 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Movie\Genre\Commands\" />
+    <Folder Include="Movie\Genre\Queries\" />
+    <Folder Include="Movie\Movie\Commands\" />
+    <Folder Include="Movie\Movie\Queries\" />
+    <Folder Include="Movie\Review\Commands\" />
+    <Folder Include="Movie\Review\Queries\" />
+    <Folder Include="People\Actor\Commands\" />
+    <Folder Include="People\Actor\Queries\" />
+    <Folder Include="People\Director\Commands\" />
+    <Folder Include="People\Director\Queries\" />
+  </ItemGroup>
+
 </Project>
