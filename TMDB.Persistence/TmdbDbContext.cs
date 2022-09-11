@@ -1,15 +1,20 @@
 ﻿using Common.Application.DbContextInterfaces;
 using Common.Models.Audit;
 using Microsoft.EntityFrameworkCore;
+using TMDB.Models.Movie;
+using TMDB.Models.People;
 
 namespace TMDB.Persistence
 {
     public class TmdbDbContext : DbContext, ITmdbDbContext
     {
-        public TmdbDbContext(DbContextOptions<TmdbDbContext> options) : base(options)
-        {
+        public DbSet<MovieModel> Movies { get; set; }
+        public DbSet<GenreModel> Genres { get; set; }
+        public DbSet<ReviewModel> Reviews { get; set; }
+        public DbSet<ActorModel> Actors { get; set; }
+        public DbSet<DirectorModel> Directors { get; set; }
 
-        }
+        public TmdbDbContext(DbContextOptions<TmdbDbContext> options) : base(options) { }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {

@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Common.Application\Common.Application.csproj" />
     <ProjectReference Include="..\Common.Models\Common.Models.csproj" />
+    <ProjectReference Include="..\TMDB.Models\TMDB.Models.csproj" />
   </ItemGroup>
 
 </Project>
