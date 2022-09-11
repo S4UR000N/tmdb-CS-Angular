@@ -1,5 +1,5 @@
 ﻿using Common.Application.DbContextInterfaces;
-using Common.Models;
+using Common.Models.Audit;
 using Microsoft.EntityFrameworkCore;
 
 namespace TMDB.Persistence
