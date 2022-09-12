@@ -9,13 +9,14 @@ namespace TMDB.Persistence
     {
         private const string ConnectionStringName = "TmdbDbContext";
         private const string AspNetCoreEnvironment = "ASPNETCORE_ENVIRONMENT";
+        private string x = Environment.GetEnvironmentVariable(AspNetCoreEnvironment);
 
         public TContext CreateDbContext(string[] args)
         {
             var basePath = Directory.GetCurrentDirectory() + string.Format("{0}..{0}TMDB.API", Path.DirectorySeparatorChar);
-#pragma warning disable CS8604 // Possible null reference argument.
+//#pragma warning disable CS8604 // Possible null reference argument.
             return Create(basePath, Environment.GetEnvironmentVariable(AspNetCoreEnvironment));
-#pragma warning restore CS8604 // Possible null reference argument.
+//#pragma warning restore CS8604 // Possible null reference argument.
         }
 
         protected abstract TContext CreateNewInstance(DbContextOptions<TContext> options);

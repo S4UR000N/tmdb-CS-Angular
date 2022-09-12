@@ -1,4 +1,5 @@
 ﻿using Common.Models.Audit;
+using TMDB.Models.People;
 
 namespace TMDB.Models.Movie
 {
@@ -8,15 +9,19 @@ namespace TMDB.Models.Movie
         public bool Adult { get; set; }
         public string Overview { get; set; } = string.Empty;
         public string ReleaseDate { get; set; } = string.Empty;
-        public List<uint> GenreIds { get; set; } = new List<uint>();
-        public uint Id { get; set; }
+        public EFLongCollection GenreIds { get; set; } = new EFLongCollection();
+        public ICollection<GenreModel>? Genres { get; set; }
+        public long Id { get; set; }
         public string OriginalTitle { get; set; } = string.Empty;
         public string OriginalLanguage { get; set; } = string.Empty;
         public string Title { get; set; } = string.Empty;
         public string BackdropPath { get; set; } = string.Empty;
         public float Popularity { get; set; }
-        public uint VoteCount { get; set; }
+        public long VoteCount { get; set; }
         public bool Video { get; set; }
         public float VoteAverage { get; set; }
+        public ICollection<ReviewModel>? Reviews { get; set; }
+        public ICollection<ActorModel>? Actors { get; set; }
+        public ICollection<DirectorModel>? Directors { get; set; }
     }
 }

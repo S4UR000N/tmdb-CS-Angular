@@ -11,6 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Common.API\Common.API.csproj" />
+    <ProjectReference Include="..\TMDB.Application\TMDB.Application.csproj" />
     <ProjectReference Include="..\TMDB.Persistence\TMDB.Persistence.csproj" />
   </ItemGroup>
 

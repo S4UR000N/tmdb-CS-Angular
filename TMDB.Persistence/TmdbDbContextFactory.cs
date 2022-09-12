@@ -2,7 +2,7 @@
 
 namespace TMDB.Persistence
 {
-    public class IdentityDbContextFactory : DesignTimeDbContextFactoryBase<TmdbDbContext>
+    public class TmdbDbContextFactory : DesignTimeDbContextFactoryBase<TmdbDbContext>
     {
         protected override TmdbDbContext CreateNewInstance(DbContextOptions<TmdbDbContext> options)
         {
