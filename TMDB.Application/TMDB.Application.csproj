@@ -10,7 +10,6 @@
     <Folder Include="Movie\Genre\Commands\" />
     <Folder Include="Movie\Genre\Queries\" />
     <Folder Include="Movie\Movie\Commands\" />
-    <Folder Include="Movie\Movie\Queries\" />
     <Folder Include="Movie\Review\Commands\" />
     <Folder Include="Movie\Review\Queries\" />
     <Folder Include="People\Actor\Commands\" />

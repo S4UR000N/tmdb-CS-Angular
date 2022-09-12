@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using TMDB.Models.Movie;
 using TMDB.Models.People;
 
@@ -6,12 +7,13 @@ namespace Common.Application.DbContextInterfaces
 {
     public interface ITmdbDbContext
     {
-        DbSet<MovieModel>? Movies { get; set; }
-        DbSet<GenreModel>? Genres { get; set; }
-        DbSet<ReviewModel>? Reviews { get; set; }
-        DbSet<ActorModel>? Actors { get; set; }
-        DbSet<DirectorModel>? Directors { get; set; }
+        public DbSet<MovieModel> Movies { get; set; }
+        public DbSet<GenreModel> Genres { get; set; }
+        public DbSet<ReviewModel> Reviews { get; set; }
+        public DbSet<ActorModel> Actors { get; set; }
+        public DbSet<DirectorModel> Directors { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+        DatabaseFacade Database { get; }
     }
 }

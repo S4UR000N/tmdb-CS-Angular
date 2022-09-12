@@ -1,6 +1,8 @@
 ﻿using Common.API.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TMDB.Application.Movie.Movie.Queries;
+using TMDB.Models.Movie;
 
 namespace TMDB.API.Controllers
 {
@@ -8,10 +10,10 @@ namespace TMDB.API.Controllers
     [ApiController]
     public class MoviesController : BaseController
     {
-        //[HttpGet]
-        //public async Task<ActionResult<dynamic>> Get([FromQuery] GetMoviesQuery model = null)
-        //{
-        //    return Ok(await Mediator.Send(model));
-        //}
+        [HttpGet]
+        public async Task<ActionResult<List<MovieModel>>> Get([FromQuery] GetMoviesQuery model = null)
+        {
+            return Ok(await Mediator.Send(model));
+        }
     }
 }

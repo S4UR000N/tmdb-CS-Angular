@@ -1,4 +1,5 @@
 ﻿using Common.Models.Audit;
+using System.ComponentModel.DataAnnotations;
 using TMDB.Models.Movie;
 
 namespace TMDB.Models.People
@@ -7,6 +8,7 @@ namespace TMDB.Models.People
     {
         public bool Adult { get; set; }
         public long? Gender { get; set; }
+        [Key]
         public long Id { get; set; }
         public string KnownForDepartment { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
@@ -17,6 +19,6 @@ namespace TMDB.Models.People
         public string Character { get; set; } = string.Empty;
         public string CreditId { get; set; } = string.Empty;
         public long Order { get; set; }
-        public ICollection<MovieModel>? Movies { get; set; }
+        public ICollection<MovieModel> Movies { get; set; }
     }
 }
