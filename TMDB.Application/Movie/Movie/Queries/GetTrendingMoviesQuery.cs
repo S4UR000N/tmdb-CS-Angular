@@ -4,10 +4,14 @@ using Microsoft.Extensions.Logging;
 using Common.Application.DbContextInterfaces;
 using TMDB.Models.Movie;
 using TMDB.Models.People;
+using Common.Application.Http;
+using System.Text.Json;
+using Common.Application.Http.Models;
+using Common.Application.Extensions.JsonSerializer;
 
 namespace TMDB.Application.Movie.Movie.Queries
 {
-    public class GetMoviesQuery : IRequest<List<MovieModel>>
+    public class GetTrendingMoviesQuery : IRequest<List<MovieModel>>
     {
         //[FromQuery(Name = "Id")]
         //public string Id { get; set; }
@@ -20,111 +24,118 @@ namespace TMDB.Application.Movie.Movie.Queries
 
         //[FromQuery(Name = "PageSize")]
         //public int? PageSize { get; set; }
-        private sealed class GetMoviesQueryHandler : IRequestHandler<GetMoviesQuery, List<MovieModel>>
+        private sealed class GetTrendingMoviesQueryHandler : IRequestHandler<GetTrendingMoviesQuery, List<MovieModel>>
         {
+            private readonly IHttpServiceProvider _httpServiceProvider;
             private readonly ITmdbDbContext _context;
             private readonly IMediator _mediator;
             private readonly ILogger _logger;
             //private readonly IMapper _mapper;
-            public GetMoviesQueryHandler(ITmdbDbContext context, IMediator mediator, ILogger<GetMoviesQueryHandler> logger/*, IMapper mapper*/)
+            public GetTrendingMoviesQueryHandler(IHttpServiceProvider httpServiceProvider, ITmdbDbContext context, IMediator mediator, ILogger<GetTrendingMoviesQueryHandler> logger/*, IMapper mapper*/)
             {
+                _httpServiceProvider = httpServiceProvider;
                 _context = context;
                 _mediator = mediator;
                 _logger = logger;
                 //_mapper = mapper;
             }
 
-            public async Task<List<MovieModel>> Handle(GetMoviesQuery request, CancellationToken cancellationToken)
+            public async Task<List<MovieModel>> Handle(GetTrendingMoviesQuery request, CancellationToken cancellationToken)
             {
-                try
-                {
-                    var count = _context.Movies.Count();
-                    if (count > 0)
-                    {
-                        await _context.Movies.ToListAsync(cancellationToken);
-                    }
-                }
-                catch
-                {
-                    var m = new MovieModel();
-                    m.PosterPath = "http/Test Poster Path";
-                    m.Adult = true;
-                    m.Overview = "Test Overview";
-                    m.ReleaseDate = "09/12/2022 16:52:55";
-                    m.GenreIds.AddRange((new long[] { 1, 2 }).Select(x => x));
-                    m.Genres = new List<GenreModel>()
-                    {
-                        new GenreModel() {
-                            Id = 1,
-                            Name = "Test Genre One"
-                        },
-                        new GenreModel() {
-                            Id = 2,
-                            Name = "Test Genre Two"
-                        }
-                    };
-                    m.Id = 1;
-                    m.OriginalTitle = "Test Title";
-                    m.OriginalLanguage = "EN";
-                    m.Title = "Test Title";
-                    m.BackdropPath = "http/Test Backdrop Path";
-                    m.Popularity = 5.00F;
-                    m.VoteCount = 5;
-                    m.Video = false;
-                    m.VoteAverage = 5.00F;
-                    m.Reviews = new List<ReviewModel>()
-                    {
-                        new ReviewModel()
-                        {
-                            Author = "NN",
-                            Content = "Some Review Text",
-                            CreatedAt = "09 / 12 / 2022 16:52:55",
-                            Id = "1",
-                            UpdatedAt = "",
-                            Url = "url"
-                        }
-                    };
-                    m.Actors = new List<ActorModel>()
-                    {
-                        new ActorModel()
-                        {
-                            Adult = false,
-                            Gender = 2,
-                            Id = 1,
-                            KnownForDepartment = "Killer move",
-                            Name = "Saitama",
-                            OriginalName = "One Punch",
-                            Popularity = 1,
-                            ProfilePath = "http/Test Path",
-                            CastId = 1,
-                            Character = "Self",
-                            CreditId = "1",
-                            Order = 1
-                        }
-                    };
-                    m.Directors = new List<DirectorModel>()
-                    {
-                        new DirectorModel()
-                        {
-                            Adult = false,
-                            Gender = 2,
-                            Id = 1,
-                            KnownForDepartment = "Killer move",
-                            Name = "Saitama",
-                            OriginalName = "One Punch",
-                            Popularity = 1,
-                            ProfilePath = "http/Test Path",
-                            CreditId = "1",
-                            Department = "Slave",
-                            Job = "Master"
-                        }
-                    };
+                var options = new JsonSerializerOptions { PropertyNamingPolicy = new SnakeCaseNamingPolicy() };
+                var response = await _httpServiceProvider.GetHttpNamedClient("Tmdb").GetAsync("https://api.themoviedb.org/3/trending/movie/day?api_key=307990d08680d9b02b3232cb6df57d79");
+                TmdbPaginatedResponseModel<List<MovieModel>> movies = await JsonSerializer.DeserializeAsync<TmdbPaginatedResponseModel<List<MovieModel>>>(await response.Content.ReadAsStreamAsync(cancellationToken), cancellationToken: cancellationToken);
+                return movies.Results;
+                //try
+                //{
+                //    var count = _context.Movies.Count();
+                //    if (count > 0)
+                //    {
+                //        await _context.Movies.ToListAsync(cancellationToken);
+                //    }
+                //}
+                //catch
+                //{
+                //    var m = new MovieModel();
+                //    m.PosterPath = "http/Test Poster Path";
+                //    m.Adult = true;
+                //    m.Overview = "Test Overview";
+                //    m.ReleaseDate = "09/12/2022 16:52:55";
+                //    m.GenreIds.AddRange((new long[] { 1, 2 }).Select(x => x));
+                //    m.Genres = new List<GenreModel>()
+                //    {
+                //        new GenreModel() {
+                //            Id = 1,
+                //            Name = "Test Genre One"
+                //        },
+                //        new GenreModel() {
+                //            Id = 2,
+                //            Name = "Test Genre Two"
+                //        }
+                //    };
+                //    m.Id = 1;
+                //    m.OriginalTitle = "Test Title";
+                //    m.OriginalLanguage = "EN";
+                //    m.Title = "Test Title";
+                //    m.BackdropPath = "http/Test Backdrop Path";
+                //    m.Popularity = 5.00F;
+                //    m.VoteCount = 5;
+                //    m.Video = false;
+                //    m.VoteAverage = 5.00F;
+                //    m.Reviews = new List<ReviewModel>()
+                //    {
+                //        new ReviewModel()
+                //        {
+                //            Author = "NN",
+                //            Content = "Some Review Text",
+                //            CreatedAt = "09 / 12 / 2022 16:52:55",
+                //            Id = "1",
+                //            UpdatedAt = "",
+                //            Url = "url"
+                //        }
+                //    };
+                //    m.Actors = new List<ActorModel>()
+                //    {
+                //        new ActorModel()
+                //        {
+                //            Adult = false,
+                //            Gender = 2,
+                //            Id = 1,
+                //            KnownForDepartment = "Killer move",
+                //            Name = "Saitama",
+                //            OriginalName = "One Punch",
+                //            Popularity = 1,
+                //            ProfilePath = "http/Test Path",
+                //            CastId = 1,
+                //            Character = "Self",
+                //            CreditId = "1",
+                //            Order = 1
+                //        }
+                //    };
+                //    m.Directors = new List<DirectorModel>()
+                //    {
+                //        new DirectorModel()
+                //        {
+                //            Adult = false,
+                //            Gender = 2,
+                //            Id = 1,
+                //            KnownForDepartment = "Killer move",
+                //            Name = "Saitama",
+                //            OriginalName = "One Punch",
+                //            Popularity = 1,
+                //            ProfilePath = "http/Test Path",
+                //            CreditId = "1",
+                //            Department = "Slave",
+                //            Job = "Master"
+                //        }
+                //    };
 
-                    _context.Movies.Add(m);
-                    await _context.SaveChangesAsync(cancellationToken);
-                }
+                //    _context.Movies.Add(m);
+                //    await _context.SaveChangesAsync(cancellationToken);
+                //}
 
                 return new List<MovieModel>() { };
+                
                 //try
                 //{
                 //    // Get All

@@ -1,3 +1,4 @@
+using Common.Application.Extensions.JsonSerializer;
 using Common.Application.Http;
 using TMDB.Application;
 using TMDB.Persistence;
@@ -9,7 +10,13 @@ builder.Services.AddHttpClient();
 builder.Services.AddScoped<IHttpServiceProvider, HttpServiceProvider>();
 builder.Services.AddApplication();
 builder.Services.AddPersistence(builder.Configuration);
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(
+        options => {
+            options.JsonSerializerOptions.PropertyNamingPolicy =
+            SnakeCaseNamingPolicy.Instance;
+        });
+;
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

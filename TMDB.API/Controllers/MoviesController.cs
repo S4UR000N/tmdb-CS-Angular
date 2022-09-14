@@ -11,7 +11,7 @@ namespace TMDB.API.Controllers
     public class MoviesController : BaseController
     {
         [HttpGet]
-        public async Task<ActionResult<List<MovieModel>>> Get([FromQuery] GetMoviesQuery model = null)
+        public async Task<ActionResult<List<MovieModel>>> Get([FromQuery] GetTrendingMoviesQuery model = null)
         {
             return Ok(await Mediator.Send(model));
         }
