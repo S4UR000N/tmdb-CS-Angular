@@ -18,6 +18,6 @@ namespace TMDB.Models.People
         public string CreditId { get; set; } = string.Empty;
         public string Department { get; set; } = string.Empty;
         public string Job { get; set; } = string.Empty;
-        public ICollection<MovieModel> Movies { get; set; }
+        public ICollection<MovieModel>? Movies { get; set; }
     }
 }

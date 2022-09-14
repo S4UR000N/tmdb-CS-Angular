@@ -22,7 +22,7 @@ namespace TMDB.Models.Movie
         public string Id { get; set; } = string.Empty;
         public string UpdatedAt { get; set; } = string.Empty;
         public string Url { get; set; } = string.Empty;
-        public ICollection<MovieModel> Movies { get; set; }
+        public ICollection<MovieModel>? Movies { get; set; }
         //total_pages
         //total_results
     }

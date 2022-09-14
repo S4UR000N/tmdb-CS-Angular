@@ -9,12 +9,12 @@ namespace TMDB.Persistence
     {
         public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<DbContext>(options => options.UseSqlServer(configuration.GetConnectionString("TmdbDbContext")));
-            services.AddScoped<ITmdbDbContext>(provider => provider.GetService<TmdbDbContext>());
-            //{
-            //    var dbContext = provider.GetService<TmdbDbContext>();
-            //    return dbContext is not null ? dbContext : throw new Exception("Can not get the database service of " + nameof(TmdbDbContext));
-            //});
+            services.AddDbContext<TmdbDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("TmdbDbContext")));
+            services.AddScoped<ITmdbDbContext>(provider =>
+            {
+                var dbContext = provider.GetService<TmdbDbContext>();
+                return dbContext is not null ? dbContext : throw new Exception("Can not get the database service of " + nameof(TmdbDbContext));
+            });
 
             return services;
         }

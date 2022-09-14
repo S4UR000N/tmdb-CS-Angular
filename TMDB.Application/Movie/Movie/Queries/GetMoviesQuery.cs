@@ -44,7 +44,7 @@ namespace TMDB.Application.Movie.Movie.Queries
                         await _context.Movies.ToListAsync(cancellationToken);
                     }
                 }
-                catch(Exception e)
+                catch
                 {
                     var m = new MovieModel();
                     m.PosterPath = "http/Test Poster Path";
